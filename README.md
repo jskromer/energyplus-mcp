@@ -41,6 +41,24 @@ EnergyPlus MCP Server makes EnergyPlus building energy simulation accessible to 
 - 🔧 **HVAC Intelligence**: Discover, analyze, and visualize HVAC system topology
 - 📈 **Smart Output Management**: Auto-discover and configure output variables/meters
 
+## Quick Start - Running Simulations
+
+**New!** Easy-to-use scripts for running EnergyPlus simulations without manual setup:
+
+**Windows (PowerShell):**
+```powershell
+.\run_docker_simulation.ps1 -Build  # First time: build Docker image
+.\run_docker_simulation.ps1         # Run default simulation
+```
+
+**Linux/macOS (Bash):**
+```bash
+./run_docker_simulation.sh --build  # First time: build Docker image
+./run_docker_simulation.sh          # Run default simulation
+```
+
+See [SIMULATION_GUIDE.md](SIMULATION_GUIDE.md) for detailed instructions, examples, and troubleshooting.
+
 ## Installation
 
 ### Using the MCP Server

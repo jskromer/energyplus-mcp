@@ -6,7 +6,22 @@ This guide explains how to run EnergyPlus simulations using the MCP server.
 
 ### Option 1: Using Docker (Recommended)
 
-The easiest way to run simulations is using the provided Docker script:
+The easiest way to run simulations is using the provided Docker script.
+
+#### Windows (PowerShell)
+
+```powershell
+# Build Docker image and run default simulation
+.\run_docker_simulation.ps1 -Build
+
+# Run with default files (1ZoneUncontrolled)
+.\run_docker_simulation.ps1
+
+# Run with specific files
+.\run_docker_simulation.ps1 -Idf "5ZoneAirCooled.idf" -Weather "USA_CA_San.Francisco.Intl.AP.724940_TMY3.epw"
+```
+
+#### Linux / macOS (Bash)
 
 ```bash
 # Build Docker image and run default simulation
@@ -107,6 +122,12 @@ energyplus-mcp-server/outputs/
 
 Run the smallest model with default weather:
 
+**Windows:**
+```powershell
+.\run_docker_simulation.ps1 -Idf "1ZoneUncontrolled.idf"
+```
+
+**Linux/macOS:**
 ```bash
 ./run_docker_simulation.sh --idf 1ZoneUncontrolled.idf
 ```
@@ -118,6 +139,12 @@ Run the smallest model with default weather:
 
 Run a realistic 5-zone building:
 
+**Windows:**
+```powershell
+.\run_docker_simulation.ps1 -Idf "5ZoneAirCooled.idf"
+```
+
+**Linux/macOS:**
 ```bash
 ./run_docker_simulation.sh --idf 5ZoneAirCooled.idf
 ```
@@ -129,6 +156,12 @@ Run a realistic 5-zone building:
 
 Run the most detailed model:
 
+**Windows:**
+```powershell
+.\run_docker_simulation.ps1 -Idf "LgOffVAV.idf"
+```
+
+**Linux/macOS:**
 ```bash
 ./run_docker_simulation.sh --idf LgOffVAV.idf
 ```
@@ -238,7 +271,7 @@ sqlite3 energyplus-mcp-server/outputs/[DIR]/eplusout.sql "SELECT * FROM Zones;"
 Solution: Install Docker Desktop from https://www.docker.com/
 ```
 
-**Problem:** Permission denied building image
+**Problem:** Permission denied building image (Linux only)
 ```
 Solution: Add your user to the docker group:
   sudo usermod -aG docker $USER
@@ -249,7 +282,9 @@ Solution: Add your user to the docker group:
 ```
 Solution:
 1. Check internet connection
-2. Try rebuilding: ./run_docker_simulation.sh --build
+2. Try rebuilding:
+   Windows:     .\run_docker_simulation.ps1 -Build
+   Linux/macOS: ./run_docker_simulation.sh --build
 3. Check Docker has enough disk space
 ```
 
@@ -258,7 +293,8 @@ Solution:
 **Problem:** IDD file not found
 ```
 Solution: Make sure you're running inside Docker:
-  ./run_docker_simulation.sh
+  Windows:     .\run_docker_simulation.ps1
+  Linux/macOS: ./run_docker_simulation.sh
 ```
 
 **Problem:** Simulation crashes
@@ -283,6 +319,13 @@ Solution:
 
 1. Add your own IDF files to `energyplus-mcp-server/sample_files/`
 2. Run with the new file:
+
+   **Windows:**
+   ```powershell
+   .\run_docker_simulation.ps1 -Idf "your_model.idf"
+   ```
+
+   **Linux/macOS:**
    ```bash
    ./run_docker_simulation.sh --idf your_model.idf
    ```
@@ -296,6 +339,13 @@ Solution:
 2. Place in `energyplus-mcp-server/sample_files/`
 
 3. Run simulation:
+
+   **Windows:**
+   ```powershell
+   .\run_docker_simulation.ps1 -Weather "your_weather.epw"
+   ```
+
+   **Linux/macOS:**
    ```bash
    ./run_docker_simulation.sh --weather your_weather.epw
    ```
@@ -304,6 +354,15 @@ Solution:
 
 Run multiple simulations in sequence:
 
+**Windows PowerShell:**
+```powershell
+# Run all IDF files
+Get-ChildItem "energyplus-mcp-server\sample_files\*.idf" | ForEach-Object {
+    .\run_docker_simulation.ps1 -Idf $_.Name
+}
+```
+
+**Linux/macOS Bash:**
 ```bash
 #!/bin/bash
 for idf in energyplus-mcp-server/sample_files/*.idf; do
