@@ -1357,10 +1357,26 @@ async def clear_logs() -> str:
 
 
 if __name__ == "__main__":
+    import sys
+
+    # Print startup screen to stderr (so it's visible while stdio is used for MCP protocol)
+    print("=" * 80, file=sys.stderr)
+    print(f"  {config.server.name} v{config.server.version}", file=sys.stderr)
+    print("=" * 80, file=sys.stderr)
+    print(f"  EnergyPlus Version: {config.energyplus.version}", file=sys.stderr)
+    print(f"  Sample Files: {config.paths.sample_files_path}", file=sys.stderr)
+    print(f"  Output Directory: {config.paths.output_dir}", file=sys.stderr)
+    print(f"  Debug Mode: {config.debug_mode}", file=sys.stderr)
+    print("=" * 80, file=sys.stderr)
+    print("  Server is starting...", file=sys.stderr)
+    print("  Ready to accept MCP connections", file=sys.stderr)
+    print("=" * 80, file=sys.stderr)
+    print("", file=sys.stderr)
+
     logger.info(f"Starting {config.server.name} v{config.server.version}")
     logger.info(f"EnergyPlus version: {config.energyplus.version}")
     logger.info(f"Sample files path: {config.paths.sample_files_path}")
-    
+
     try:
         # Use FastMCP's built-in run method with stdio transport
         mcp.run(transport="stdio")
